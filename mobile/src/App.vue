@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <el-menu
+    <el-header >
+      <el-menu
             :default-active="activeIndex"
             class="el-menu-demo"
             mode="horizontal"
@@ -11,10 +12,14 @@
       <el-menu-item v-for="item in tabItems" :key="item.CategoryID" :index="item.Order" >
         <!-- <router-link :to="item.Router">{{ item.Name }}</router-link> -->
         {{ item.Name }}
-      </el-menu-item>
+      </el-menu-item >
     </el-menu>
-
-    <router-view/>
+    </el-header>
+    
+    <el-Main>
+      <router-view />
+    </el-Main>
+    
   </div>
 </template>
 
@@ -32,9 +37,8 @@
 export default {
   data() {
     return {
-      tabItems: this.$root.tabItems,
-      activeIndex: this.$root.activeIndex,
-      selectedTab: this.$root.tabItems[0]
+      tabItems: this.$store.state.tabItems,
+      activeIndex: this.$store.state.activeIndex
     };
   },
   methods: {
@@ -44,9 +48,11 @@ export default {
       this.fetchPage(d.CategoryID, d);
     },
     fetchPage(cateID, item) {
-      //console.log(`ID: ${cateID} - router: ${item.Router} - cmd: ${item.Cmd}]`);
-      this.selectedTab = item;
+      this.$store.commit("setcmd", item.Cmd);
       this.$router.push(item.Router);
+    },
+    handleScroll(e) {
+      console.log(e);
     }
   },
   mounted() {

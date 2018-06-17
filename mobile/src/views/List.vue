@@ -1,62 +1,44 @@
 <template>
   <el-table
-    :data="tableData"
+    :data="mlist"
     stripe
+    :show-header="false" 
     style="width: 100%" 
-    empty-text="No Data">
-    <el-table-column
-      prop="date"
-      label="Date"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="Name"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="address"
-      label="Address">
+    empty-text="No Data"
+    v-loading="this.$store.state.loading"
+    >
+    <el-table-column label="abc">
+      <template slot-scope="scope">
+        <list-item 
+          :vc="scope.row.vc"
+          :title="scope.row.title" 
+          :showDate="scope.row.showDate" 
+          :description="scope.row.description">
+        </list-item>
+      </template>
     </el-table-column>
   </el-table>
 </template>
 
+<style>
+body {
+  margin: 0;
+}
+</style>
+
 <script>
+import ListItem from "../components/ListItem.vue";
+import { mapState } from "vuex";
+
 export default {
   data() {
-    return {
-      tab: this.$parent.selectedTab,
-      tableData: []
-    };
+    return {};
   },
-  mounted() {
-    if (this.tab) {
-      const that = this;
-      setTimeout(() => {
-        that.tableData = [
-          {
-            date: "2016-05-03",
-            name: "Tom",
-            address: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            date: "2016-05-02",
-            name: "Tom",
-            address: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            date: "2016-05-04",
-            name: "Tom",
-            address: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            date: "2016-05-01",
-            name: "Tom",
-            address: "No. 189, Grove St, Los Angeles"
-          }
-        ];
-      }, 5000);
-    }
+  computed: mapState({
+    mlist: "list"
+  }),
+  components: {
+    "list-item": ListItem
   }
 };
 </script>
