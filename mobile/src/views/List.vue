@@ -37,6 +37,11 @@ export default {
   computed: mapState({
     mlist: "list"
   }),
+  methods: {
+    handleScroll(e, position) {
+      console.log(e, position);
+    }
+  },
   components: {
     "list-item": ListItem
   }

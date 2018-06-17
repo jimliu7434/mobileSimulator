@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" >
     <el-header >
       <el-menu
             :default-active="activeIndex"
@@ -16,7 +16,7 @@
     </el-menu>
     </el-header>
     
-    <el-Main>
+    <el-Main @v-scroll="handleScroll">
       <router-view />
     </el-Main>
     
@@ -54,6 +54,12 @@ export default {
     handleScroll(e) {
       console.log(e);
     }
+  },
+  created() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
   mounted() {
     const idx = Number(this.activeIndex) - 1;

@@ -4,9 +4,11 @@ import "element-ui/lib/theme-chalk/index.css";
 import App from "./App.vue";
 import router from "./router";
 import Vuex from "vuex";
+import Vuescroll from "vue-scroll";
 
 Vue.use(ElementUI);
 Vue.use(Vuex);
+Vue.use(Vuescroll);
 
 Vue.config.productionTip = false;
 
