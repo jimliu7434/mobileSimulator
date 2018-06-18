@@ -4,17 +4,16 @@ import "element-ui/lib/theme-chalk/index.css";
 import App from "./App.vue";
 import router from "./router";
 import Vuex from "vuex";
-import Vuescroll from "vue-scroll";
+import Axios from "axios";
 
 Vue.use(ElementUI);
 Vue.use(Vuex);
-Vue.use(Vuescroll);
+Vue.prototype.$http = Axios;
 
 Vue.config.productionTip = false;
 
 const store = new Vuex.Store({
   state: {
-    cmd: "GetAllNewsList",
     activeIndex: "1",
     loading: false,
     tabItems: [
@@ -41,6 +40,10 @@ const store = new Vuex.Store({
     },
     list: state => {
       return state.list;
+    },
+    selected: state => {
+      const idx = Number(state.activeIndex);
+      return state.tabItems[idx];
     }
   },
   mutations: {
@@ -48,159 +51,12 @@ const store = new Vuex.Store({
       state.cmd = cmd;
       console.log(state.cmd);
 
-      let l;
-      if (state.cmd === "GetAllNewsList") {
-        l = [
-          {
-            vc: 5,
-            showDate: "2016-05-03",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-02",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-04",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-01",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          }
-        ];
-      } else {
-        l = [
-          {
-            vc: 5,
-            showDate: "2016-05-03",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          },
-          {
-            vc: 5,
-            showDate: "2016-05-02",
-            title: "Tom",
-            description: "No. 189, Grove St, Los Angeles"
-          }
-        ];
-      }
-      this.dispatch("setlistAsync", l);
+      const args = {
+        cmd: this.getters.selected.Cmd,
+        cateID: this.getters.selected.CategoryID
+      };
+
+      this.dispatch("setlistAsync", args);
     },
     setlist(state, list) {
       state.list = list;
@@ -210,14 +66,59 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    setlistAsync({ commit }, list) {
-      commit("setloading", true);
+    async setlistAsync({ commit }, args) {
       commit("setlist", []);
+      commit("setloading", true);
+      let list = [];
+      if (args.cmd === "GetAllNewsList") {
+        // change to axios
+        list.push(
+          {
+            vc: 10,
+            title: "ABCDEFG",
+            showDate: "2018-01-01",
+            description: "testing"
+          },
+          {
+            vc: 10,
+            title: "ABCDEFG",
+            showDate: "2018-01-01",
+            description: "testing"
+          }
+        );
+      } else if (args.cmd === "GetStockNewsList") {
+        // change to axios
+        list.push(
+          {
+            vc: 10,
+            title: "ABCDEFG",
+            showDate: "2018-01-01",
+            description: "testing"
+          },
+          {
+            vc: 10,
+            title: "ABCDEFG",
+            showDate: "2018-01-01",
+            description: "testing"
+          },
+          {
+            vc: 10,
+            title: "ABCDEFG",
+            showDate: "2018-01-01",
+            description: "testing"
+          },
+          {
+            vc: 10,
+            title: "ABCDEFG",
+            showDate: "2018-01-01",
+            description: "testing"
+          }
+        );
+      }
       setTimeout(() => {
-        console.log("trigger", list);
         commit("setloading", false);
         commit("setlist", list);
-      }, 5000);
+      }, 2000);
     }
   }
 });
