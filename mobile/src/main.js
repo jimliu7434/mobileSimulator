@@ -32,6 +32,7 @@ const store = new Vuex.Store({
         Name: "自選新聞"
       }
     ],
+    isSending: false,
     list: []
   },
   getters: {
@@ -61,6 +62,9 @@ const store = new Vuex.Store({
     },
     setloading(state, loading) {
       state.loading = loading;
+    },
+    setsending(state, sending) {
+      state.isSending = sending;
     }
   },
   actions: {
@@ -69,53 +73,29 @@ const store = new Vuex.Store({
       commit("setloading", true);
       let list = [];
       if (args.cmd === "GetAllNewsList") {
-        // change to axios
-        list.push(
-          {
-            vc: 10,
-            title: "ABCDEFG",
+        for (let i = 0; i < 20; i++) {
+          list.push({
+            vc: 100000,
+            title: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
             showDate: "2018-01-01",
-            description: "testing"
-          },
-          {
-            vc: 10,
-            title: "ABCDEFG",
-            showDate: "2018-01-01",
-            description: "testing"
-          }
-        );
+            description: "1234567890123456789012345678901234567890"
+          });
+        }
       } else if (args.cmd === "GetStockNewsList") {
         // change to axios
-        list.push(
-          {
-            vc: 10,
-            title: "ABCDEFG",
+        for (let i = 0; i < 20; i++) {
+          list.push({
+            vc: 100000,
+            title: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
             showDate: "2018-01-01",
-            description: "testing"
-          },
-          {
-            vc: 10,
-            title: "ABCDEFG",
-            showDate: "2018-01-01",
-            description: "testing"
-          },
-          {
-            vc: 10,
-            title: "ABCDEFG",
-            showDate: "2018-01-01",
-            description: "testing"
-          },
-          {
-            vc: 10,
-            title: "ABCDEFG",
-            showDate: "2018-01-01",
-            description: "testing"
-          }
-        );
+            description: "1234567890123456789012345678901234567890"
+          });
+        }
       }
       setTimeout(() => {
         commit("setloading", false);
         commit("setlist", list);
+        commit("setsending", false);
       }, 2000);
     }
   }
