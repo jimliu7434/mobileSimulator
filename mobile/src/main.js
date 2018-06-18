@@ -49,8 +49,6 @@ const store = new Vuex.Store({
   mutations: {
     setcmd(state, cmd) {
       state.cmd = cmd;
-      console.log(state.cmd);
-
       const args = {
         cmd: this.getters.selected.Cmd,
         cateID: this.getters.selected.CategoryID
